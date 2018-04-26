@@ -21,15 +21,16 @@ class ServerHandler(socketserver.BaseRequestHandler):
         print("{} wrote:".format(self.client_address[0]))
         print(self.data)
         # upper-case it and send it back
-        self.request.sendall(self.data.upper())
+        # self.request.sendall(self.data.upper())
 
 
 class ServerMain(socketserver.TCPServer):
-    def service_actions(self):
-        log.dbg("serve_forever called successfully.")
+    # def service_actions(self):
+        # log.dbg("serve_forever called successfully.")
         # there should be code to do something like shoot back
         # some sensor data from the on-board arduino here.
         # except there isn't. oops.
+
 
     def server_close(self):
         log.wng("Cleaning up...")
