@@ -19,7 +19,7 @@ class ServerHandler(socketserver.BaseRequestHandler):
         try:
             client_ip = str(self.client_address[0])
 
-             while 1:
+            while 1:
                 self.data = self.request.recv(1024)
                 if not self.data:
                     break
@@ -30,7 +30,7 @@ class ServerHandler(socketserver.BaseRequestHandler):
                 print("%s wrote: %s" % (client_ip, received_data))
 
                 # respond
-                self.request.send(received_data.upper())
+                self.request.send(received_data.upper().encode('utf-8'))
         except:
             pass
 
