@@ -23,25 +23,25 @@ class Lumberjack:
     def dbg(self, logstring):
         """Print super-verbose debug logging."""
         if self._loglevel >= 2:
-            print(Fore.CYAN + f"[{self._callershort}-DBG] " + Fore.RESET + f"{logstring}")
+            print(Fore.CYAN + "[{}-DBG] ".format(self._callershort) + Fore.RESET + "{}".format(logstring))
         self._dbgcount += 1
 
     def wng(self, logstring):
         """Print a warning that won't be shown at the lowest level."""
         if self._loglevel >= 1:
-            print(Fore.YELLOW + f"[{self._callershort}-WNG] " + Fore.RESET + f"{logstring}")
+            print(Fore.YELLOW + "[{}-WNG] ".format(self._callershort) + Fore.RESET + "{}".format(logstring))
         self._wngcount += 1
 
     def err(self, logstring):
         """Print very bad error."""
-        print(Fore.RED + f"[{self._callershort}-ERR] " + Fore.RESET + f"{logstring}")
+        print(Fore.RED + "[{}-ERR] ".format(self._callershort) + Fore.RESET + "{}".format(logstring))
         self._errcount += 1
 
     def out(self, logstring):
         """Make some normal output that you want the user to see."""
-        print(f"[{self._callershort}] {logstring}")
+        print("[{0}] {1}".format(self._callershort, logstring))
 
     def showcounters(self):
-        print(Fore.RED + f"Errors:   {self._errcount}" + Fore.RESET)
-        print(Fore.YELLOW + f"Warnings: {self._wngcount}" + Fore.RESET)
-        print(Fore.CYAN + f"Info:     {self._dbgcount}" + Fore.RESET)
+        print(Fore.RED + "Errors:   {}".format(self._errcount) + Fore.RESET)
+        print(Fore.YELLOW + "Warnings: {}".format(self._wngcount) + Fore.RESET)
+        print(Fore.CYAN + "Info:     {}".format(self._dbgcount) + Fore.RESET)
