@@ -10,9 +10,15 @@ HOST, PORT = "localhost", 9999
 data = " ".join(sys.argv[1:])
 log = lumberjack.Lumberjack("client.py", "CLIENT", 2)
 
+
 def sendstickpositionupdate():
-    jsondata = f'"stick_roll": {stick.get_axis(0)}, "stick_pitch": {stick.get_axis(1)}'
+    jsondata = '"stick_roll": {0:.3f}, "stick_pitch": {1:.3f}, "stick_yaw": {2:.3f} ' \
+               '"stick_throttle": {3:.3f}'.format(stick.get_axis(0), stick.get_axis(1), stick.get_axis(3),
+                                                  stick.get_axis(2))
     sock.send(bytes(jsondata + "\n", "utf-8"))
+
+def sendbuttonstateupdate():
+    log.wng("button state updated, but I didn't implement. oops.")
 
 # joystick init and setup and stuff
 log.dbg("Starting joystick init")
@@ -42,9 +48,13 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
         log.err("Stopping!")
         sys.exit(1)
 
+    log.dbg("Connected successfully. Now taking inputs.")
+
     while True:
         for event in pygame.event.get():
             if event.type == pygame.JOYAXISMOTION:
                 sendstickpositionupdate()
+            if event.type == pygame.JOYBUTTONDOWN or event.type == pygame.JOYBUTTONUP:
+                sendbuttonstateupdate()
 
     # received = str(sock.recv(4096), "utf-8")
