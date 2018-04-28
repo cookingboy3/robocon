@@ -88,9 +88,11 @@ class ServerHandler(socketserver.BaseRequestHandler):
                         if jsondata["message_type"] == "STICK_UPDATE":
                             log.dbg("looks like a stick update message boss")
                         self.joyPain(jsondata)
-                    except Exception as ex:
+                    except Exception as e:
                         log.err("uh oh")
-                        log.err(ex)
+                        exc_type, exc_obj, exc_tb = sys.exc_info()
+                        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+                        log.err(exc_type, fname, exc_tb.tb_lineno)
                 except KeyboardInterrupt:
                     key_kill = True
                     break
