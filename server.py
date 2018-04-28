@@ -17,6 +17,9 @@ js_throttle = 50
 js_pitch = 50
 js_yaw = 50
 js_roll = 50
+claw_state = False
+
+claw_last_state = False
 
 class ServerHandler(socketserver.BaseRequestHandler):
     """
@@ -27,6 +30,16 @@ class ServerHandler(socketserver.BaseRequestHandler):
         return int((x-in_min) * (out_max-out_min) / (in_max-in_min) + out_min)
 
     def drivePain():
+        if claw_state != claw_last_state:
+            # Move the claw
+            if claw_state == False:
+                # Close claw
+                #servoActuate(?, 100)
+                claw_last_state = True
+            else:
+                #Open claw
+                #servoActuate(?, 0)
+                claw_last_state = False
 
     def servoActuate(channel, target):
         if channel == 999 or 998 or 997:
