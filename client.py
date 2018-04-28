@@ -7,7 +7,8 @@ import sys
 import json
 from time import sleep
 
-HOST, PORT = "10.4.10.131", 9999
+#10.4.10.131
+HOST, PORT = "192.168.43.72", 9999
 data = " ".join(sys.argv[1:])
 log = lumberjack.Lumberjack("client.py", "CLIENT", 2)
 
