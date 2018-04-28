@@ -20,13 +20,20 @@ class ServerHandler(socketserver.BaseRequestHandler):
             client_ip = str(self.client_address[0])
 
             while 1:
-                self.data = self.request.recv(4096).strip()
+                self.data = self.request.recv(4096).decode("utf-8").strip()
                 print("{} wrote:".format(self.client_address[0]))
                 print(self.data)
+                try:
+                    jsondata = json.loads(self.data)
+                    if jsondata["message_type"] == "STICK_UPDATE":
+                        log.dbg("looks like a stick update message boss")
+                except Exception as ex:
+                    log.err("oh shit")
+                    log.err(ex)
         except:
             pass
 
-        print('Client %s decided it was time to go.' % str(self.client_address[0]))
+        log.wng('Client %s decided it was time to go.' % str(self.client_address[0]))
 
 class ServerMain(socketserver.TCPServer):
     # def service_actions(self):
