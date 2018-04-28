@@ -72,6 +72,7 @@ class ServerHandler(socketserver.BaseRequestHandler):
     def handle(self):
         try:
             client_ip = str(self.client_address[0])
+            key_kill = False
 
             while 1:
                 try:
