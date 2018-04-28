@@ -40,10 +40,13 @@ class ServerHandler(socketserver.BaseRequestHandler):
         return int((x-in_min) * (out_max-out_min) / (in_max-in_min) + out_min)
 
     def joyPain(self, jsondata):
-        js_throttle = self.notmap(jsondata["stick_throttle"], -1, 1, 0, 100)
-        js_pitch = self.notmap(jsondata["stick_pitch"], -1, 1, 0, 100)
-        js_yaw = self.notmap(jsondata["stick_yaw"], -1, 1, 0, 100)
-        js_roll = self.notmap(jsondata["stick_roll"], -1, 1, 0, 100)
+        try:
+            js_throttle = self.notmap(jsondata["stick_throttle"], -1, 1, 0, 100)
+            js_pitch = self.notmap(jsondata["stick_pitch"], -1, 1, 0, 100)
+            js_yaw = self.notmap(jsondata["stick_yaw"], -1, 1, 0, 100)
+            js_roll = self.notmap(jsondata["stick_roll"], -1, 1, 0, 100)
+        except:
+            log.err("ahahahahahahhahahhahh")
 
     def drivePain(self):
         # Check if claw has changed
@@ -91,9 +94,7 @@ class ServerHandler(socketserver.BaseRequestHandler):
                         self.joyPain(jsondata)
                     except Exception as e:
                         log.err("uh oh")
-                        exc_type, exc_obj, exc_tb = sys.exc_info()
-                        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-                        print(exc_type, fname, exc_tb.tb_lineno)
+                        log.err(e)
                 except KeyboardInterrupt:
                     key_kill = True
                     break
