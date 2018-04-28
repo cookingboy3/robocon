@@ -6,14 +6,14 @@ import pygame
 import sys
 import json
 
-HOST, PORT = "localhost", 9999
+HOST, PORT = "10.4.10.131", 9999
 data = " ".join(sys.argv[1:])
 log = lumberjack.Lumberjack("client.py", "CLIENT", 2)
 
 
 def sendstickpositionupdate():
-    jsondata = '"stick_roll": {0:.3f}, "stick_pitch": {1:.3f}, "stick_yaw": {2:.3f} ' \
-               '"stick_throttle": {3:.3f}'.format(stick.get_axis(0), stick.get_axis(1), stick.get_axis(3),
+    jsondata = '"message_type": "STICK_UPDATE", "stick_roll": {0:.3f}, "stick_pitch": {1:.3f}, "stick_yaw": {2:.3f} ' \
+            '"stick_throttle": {3:.3f}'.format(stick.get_axis(0), stick.get_axis(1), stick.get_axis(3),
                                                   stick.get_axis(2))
     sock.send(bytes(jsondata + "\n", "utf-8"))
 
