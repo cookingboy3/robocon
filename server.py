@@ -12,6 +12,8 @@ log = lumberjack.Lumberjack("server.py", "MAIN", logginglevel)  # global lumberj
 
 pwmhell = pigpio.pi()
 
+# Variable Hell
+
 class ServerHandler(socketserver.BaseRequestHandler):
     """
     Request handler class
@@ -24,6 +26,7 @@ class ServerHandler(socketserver.BaseRequestHandler):
 
     def servoActuate(channel, target):
         if channel == 999 or 998 or 997:
+            # Use specific range for channel
             pwmhell.set_servo_pulsewidth(channel, map(target, 0, 100, 1100, 1900))
         else:
             # Use full range
