@@ -79,6 +79,7 @@ class ServerHandler(socketserver.BaseRequestHandler):
             # Use full range
             pwmhell.set_servo_pulsewidth(channel, self.notmap(target, 0, 100, 1100, 1900))
             log.dbg(target)
+            log.dbg(self.notmap(target, 0, 100, 1100, 1900))
 
     def handle(self):
         try:
