@@ -72,7 +72,7 @@ class ServerHandler(socketserver.BaseRequestHandler):
         except:
             pass
 
-        log.wng('Client %s decided it was time to go.' % str(self.client_address[0]))
+        log.wng('Client %s decided it was time to go. Bye.' % str(self.client_address[0]))
 
 class ServerMain(socketserver.TCPServer):
     # def service_actions(self):
