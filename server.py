@@ -52,25 +52,31 @@ class ServerHandler(socketserver.BaseRequestHandler):
 
     def drivePain(self):
         # Check if claw has changed
-        if claw_state != claw_last_state:
+        #if claw_state != claw_last_state:
             # Move the claw
-            if claw_state == False:
+        #    if claw_state == False:
                 # Close claw
-                self.servoActuate(27, 100)
-                claw_last_state = True
-            else:
+        #        self.servoActuate(27, 100)
+        #        claw_last_state = True
+        #    else:
                 #Open claw
-                self.servoActuate(27, 0)
-                claw_last_state = False
+        #        self.servoActuate(27, 0)
+        #        claw_last_state = False
         # go up
-        self.servoActuate(4,  js_throttle)
-        self.servoActuate(17, js_throttle)
+        try:
+            self.servoActuate(4,  js_throttle)
+            self.servoActuate(17, js_throttle)
+        except:
+            log.err("failed up")
         # go forward
         #servoActuate(2, js_pitch)
         #servoActuate(3, js_pitch)
         # S P I N
-        self.servoActuate(2,  js_yaw + js_pitch)
-        self.servoActuate(3, -js_yaw + js_pitch)
+        try:
+            self.servoActuate(2,  js_yaw + js_pitch)
+            self.servoActuate(3, -js_yaw + js_pitch)
+        except:
+            log.err("failed up")
 
     def servoActuate(self, channel, target):
         pwmhell.set_servo_pulsewidth(channel, self.notmap(target, 0, 100, 1100, 1900))
