@@ -20,21 +20,9 @@ class ServerHandler(socketserver.BaseRequestHandler):
             client_ip = str(self.client_address[0])
 
             while 1:
-                self.data = self.request.recv(1024)
-                if not self.data:
-                    break
-
-                received_data = self.data.decode('utf-8').strip()
-                received_data = json.loads(received_data)
-
-                if received_data["message_type"] == "STICK_UPDATE":
-                    log.dbg("got stick!")
-
-                # print debug
-                print("%s wrote: %s" % (client_ip, received_data))
-
-                # respond
-                self.request.send(received_data.upper().encode('utf-8'))
+                self.data = self.request.recv(4096).strip()
+                print("{} wrote:".format(self.client_address[0]))
+                print(self.data)
         except:
             pass
 
