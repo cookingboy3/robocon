@@ -43,11 +43,11 @@ class ServerHandler(socketserver.BaseRequestHandler):
             log.err("section kwfw")
             log.err(e)
         try:
-            log.dbg(((x-in_min) * (out_max-out_min) / (in_max-in_min) + out_min))
+            log.dbg(out_min + (out_max - out_min) * ((x - in_min) / (in_max - in_min)))
         except Exception as e:
             log.err("section mwfw")
             log.err(e)
-        return ((x-in_min) * (out_max-out_min) / (in_max-in_min) + out_min)
+        return out_min + (out_max - out_min) * ((x - in_min) / (in_max - in_min))
 
     def joyPain(self, jsondata):
         try:
