@@ -40,10 +40,10 @@ class ServerHandler(socketserver.BaseRequestHandler):
         return int((x-in_min) * (out_max-out_min) / (in_max-in_min) + out_min)
 
     def joyPain(self, jsondata):
-        js_throttle = notmap(jsondata["stick_throttle"], -1, 1, 0, 100)
-        js_pitch = notmap(jsondata["stick_pitch"], -1, 1, 0, 100)
-        js_yaw = notmap(jsondata["stick_yaw"], -1, 1, 0, 100)
-        js_roll = notmap(jsondata["stick_roll"], -1, 1, 0, 100)
+        js_throttle = self.notmap(jsondata["stick_throttle"], -1, 1, 0, 100)
+        js_pitch = self.notmap(jsondata["stick_pitch"], -1, 1, 0, 100)
+        js_yaw = self.notmap(jsondata["stick_yaw"], -1, 1, 0, 100)
+        js_roll = self.notmap(jsondata["stick_roll"], -1, 1, 0, 100)
 
     def drivePain(self):
         # Check if claw has changed
@@ -64,10 +64,10 @@ class ServerHandler(socketserver.BaseRequestHandler):
     def servoActuate(self, channel, target):
         if channel == 999 or 998 or 997:
             # Use specific range for channel
-            pwmhell.set_servo_pulsewidth(channel, notmap(target, 0, 100, 1100, 1900))
+            pwmhell.set_servo_pulsewidth(channel, self.notmap(target, 0, 100, 1100, 1900))
         else:
             # Use full range
-            pwmhell.set_servo_pulsewidth(channel, notmap(target, 0, 100, 1100, 1900))
+            pwmhell.set_servo_pulsewidth(channel, self.notmap(target, 0, 100, 1100, 1900))
 
     def handle(self):
         try:
