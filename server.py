@@ -36,16 +36,16 @@ class ServerHandler(socketserver.BaseRequestHandler):
     Request handler class
     """
 
-    def map(x, in_min, in_max, out_min, out_max):
+    def map(self, x, in_min, in_max, out_min, out_max):
         return int((x-in_min) * (out_max-out_min) / (in_max-in_min) + out_min)
 
-    def joyPain():
+    def joyPain(self, jsondata):
         js_throttle = map(jsondata["stick_throttle"], -1, 1, 0, 100)
         js_pitch = map(jsondata["stick_pitch"], -1, 1, 0, 100)
         js_yaw = map(jsondata["stick_yaw"], -1, 1, 0, 100)
         js_roll = map(jsondata["stick_roll"], -1, 1, 0, 100)
 
-    def drivePain():
+    def drivePain(self):
         # Check if claw has changed
         if claw_state != claw_last_state:
             # Move the claw
@@ -61,7 +61,7 @@ class ServerHandler(socketserver.BaseRequestHandler):
 
         # Up/down motor
 
-    def servoActuate(channel, target):
+    def servoActuate(self, channel, target):
         if channel == 999 or 998 or 997:
             # Use specific range for channel
             pwmhell.set_servo_pulsewidth(channel, map(target, 0, 100, 1100, 1900))
@@ -87,7 +87,7 @@ class ServerHandler(socketserver.BaseRequestHandler):
                         log.dbg(jsondata["stick_throttle"])
                         if jsondata["message_type"] == "STICK_UPDATE":
                             log.dbg("looks like a stick update message boss")
-                        joyPain()
+                        self.joyPain(jsondata)
                     except Exception as ex:
                         log.err("uh oh")
                         log.err(ex)
