@@ -22,6 +22,12 @@ class ServerHandler(socketserver.BaseRequestHandler):
 
     def drivePain():
 
+    def servoActuate(channel, target):
+        if channel == 999 or 998 or 997:
+            pwmhell.set_servo_pulsewidth(channel, map(target, 0, 100, 1100, 1900))
+        else:
+            # Use full range
+            pwmhell.set_servo_pulsewidth(channel, map(target, 0, 100, 1100, 1900))
 
     def handle(self):
         try:
