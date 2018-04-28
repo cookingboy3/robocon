@@ -24,7 +24,12 @@ class ServerHandler(socketserver.BaseRequestHandler):
                 print("{} wrote:".format(self.client_address[0]))
                 print(self.data)
                 try:
-                    jsondata = json.loads(self.data)
+                    jsondata = json.loads('{' + self.data + '}')
+                    log.dbg(jsondata["message_type"])
+                    log.dbg(jsondata["stick_roll"])
+                    log.dbg(jsondata["stick_yaw"])
+                    log.dbg(jsondata["stick_pitch"])
+                    log.dbg(jsondata["stick_throttle"])
                     if jsondata["message_type"] == "STICK_UPDATE":
                         log.dbg("looks like a stick update message boss")
                 except Exception as ex:
