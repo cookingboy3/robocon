@@ -61,9 +61,14 @@ class ServerHandler(socketserver.BaseRequestHandler):
                 servoActuate(27, 0)
                 claw_last_state = False
         # Forward/backward motor
-
+        servoActuate(2, js_throttle)
+        servoActuate(3, js_throttle)
         # Up/down motor
+        servoActuate(4, js_pitch)
+        servoActuate(17, js_pitch)
 
+        servoActuate(2, js_roll)
+        servoActuate(3, -js_roll)
     def servoActuate(self, channel, target):
         if channel == 999 or 998 or 997:
             # Use specific range for channel
