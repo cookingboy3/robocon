@@ -46,6 +46,7 @@ class ServerHandler(socketserver.BaseRequestHandler):
             js_yaw = self.notmap(jsondata["stick_yaw"], -1, 1, 0, 100)
             js_roll = self.notmap(jsondata["stick_roll"], -1, 1, 0, 100)
             log.dbg(js_yaw)
+            drivePain()
         except:
             log.err("ahahahahahahhahahhahh")
 
