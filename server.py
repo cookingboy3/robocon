@@ -56,7 +56,7 @@ class ServerMain(socketserver.TCPServer):
 
 
 if __name__ == "__main__":
-    HOST, PORT = "localhost", 9999
+    HOST, PORT = "10.4.10.131", 9999
 
     # start background subprocess for streaming out main camera interface
     subprocess.run("raspivid -o - -t 0 -n -w 1280 -h 720 -fps 30 | cvlc -vvv stream:///dev/stdin --sout '#rtp{sdp=rtsp:"
