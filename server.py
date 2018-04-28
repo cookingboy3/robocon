@@ -12,6 +12,14 @@ log = lumberjack.Lumberjack("server.py", "MAIN", logginglevel)  # global lumberj
 
 pwmhell = pigpio.pi()
 
+# Constant pls
+unnamed_one = 2
+unnamed_two = 3
+unnamed_three = 4
+unnamed_four = 17
+claw_servo_gpio = 27
+unnamed_six = 22
+
 # Variable Hell
 js_throttle = 50
 js_pitch = 50
@@ -37,11 +45,11 @@ class ServerHandler(socketserver.BaseRequestHandler):
             # Move the claw
             if claw_state == False:
                 # Close claw
-                #servoActuate(?, 100)
+                servoActuate(claw_servo_gpio, 100)
                 claw_last_state = True
             else:
                 #Open claw
-                #servoActuate(?, 0)
+                servoActuate(claw_servo_gpio, 0)
                 claw_last_state = False
         # Forward/backward motor
 
