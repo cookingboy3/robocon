@@ -15,6 +15,9 @@ class ServerHandler(socketserver.BaseRequestHandler):
     Request handler class
     """
 
+    def map(x, in_min, in_max, out_min, out_max):
+        return int((x-in_min) * (out_max-out_min) / (in_max-in_min) + out_min)
+
     def handle(self):
         try:
             client_ip = str(self.client_address[0])
