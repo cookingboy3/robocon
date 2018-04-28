@@ -4,11 +4,13 @@ import lumberjack
 import socketserver
 import json
 import subprocess
+import pigpio
 
 # configuration variables
 logginglevel = 2  # loglevel passed
 log = lumberjack.Lumberjack("server.py", "MAIN", logginglevel)  # global lumberjack
 
+pwmhell = pigpio.pi()
 
 class ServerHandler(socketserver.BaseRequestHandler):
     """
@@ -17,6 +19,9 @@ class ServerHandler(socketserver.BaseRequestHandler):
 
     def map(x, in_min, in_max, out_min, out_max):
         return int((x-in_min) * (out_max-out_min) / (in_max-in_min) + out_min)
+
+    def drivePain():
+
 
     def handle(self):
         try:
