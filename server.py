@@ -45,6 +45,7 @@ class ServerHandler(socketserver.BaseRequestHandler):
             js_pitch = self.notmap(jsondata["stick_pitch"], -1, 1, 0, 100)
             js_yaw = self.notmap(jsondata["stick_yaw"], -1, 1, 0, 100)
             js_roll = self.notmap(jsondata["stick_roll"], -1, 1, 0, 100)
+            log.dbg(js_yaw)
         except:
             log.err("ahahahahahahhahahhahh")
 
@@ -64,11 +65,11 @@ class ServerHandler(socketserver.BaseRequestHandler):
         servoActuate(4,  js_throttle)
         servoActuate(17, js_throttle)
         # go forward
-        servoActuate(2, js_pitch)
-        servoActuate(3, js_pitch)
+        #servoActuate(2, js_pitch)
+        #servoActuate(3, js_pitch)
         # S P I N
-        servoActuate(2,  js_yaw)
-        servoActuate(3, -js_yaw)
+        servoActuate(2,  js_yaw + js_pitch)
+        servoActuate(3, -js_yaw + js_pitch)
 
     def servoActuate(self, channel, target):
         if channel == 999 or 998 or 997:
@@ -77,6 +78,7 @@ class ServerHandler(socketserver.BaseRequestHandler):
         else:
             # Use full range
             pwmhell.set_servo_pulsewidth(channel, self.notmap(target, 0, 100, 1100, 1900))
+            log.dbg(target)
 
     def handle(self):
         try:
