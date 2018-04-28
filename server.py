@@ -13,6 +13,10 @@ log = lumberjack.Lumberjack("server.py", "MAIN", logginglevel)  # global lumberj
 pwmhell = pigpio.pi()
 
 # Variable Hell
+js_throttle = 50
+js_pitch = 50
+js_yaw = 50
+js_roll = 50
 
 class ServerHandler(socketserver.BaseRequestHandler):
     """
