@@ -21,6 +21,8 @@ claw_state = False
 
 claw_last_state = False
 
+key_kill = False
+
 class ServerHandler(socketserver.BaseRequestHandler):
     """
     Request handler class
@@ -54,25 +56,29 @@ class ServerHandler(socketserver.BaseRequestHandler):
             client_ip = str(self.client_address[0])
 
             while 1:
-                self.data = self.request.recv(4096).decode("utf-8").strip()
-                print("{} wrote:".format(self.client_address[0]))
-                print(self.data)
                 try:
-                    jsondata = json.loads('{' + self.data + '}')
-                    log.dbg(jsondata["message_type"])
-                    log.dbg(jsondata["stick_roll"])
-                    log.dbg(jsondata["stick_yaw"])
-                    log.dbg(jsondata["stick_pitch"])
-                    log.dbg(jsondata["stick_throttle"])
-                    if jsondata["message_type"] == "STICK_UPDATE":
-                        log.dbg("looks like a stick update message boss")
-                except Exception as ex:
-                    log.err("oh shit")
-                    log.err(ex)
+                    self.data = self.request.recv(4096).decode("utf-8").strip()
+                    print("{} wrote:".format(self.client_address[0]))
+                    print(self.data)
+                    try:
+                        jsondata = json.loads('{' + self.data + '}')
+                        log.dbg(jsondata["message_type"])
+                        log.dbg(jsondata["stick_roll"])
+                        log.dbg(jsondata["stick_yaw"])
+                        log.dbg(jsondata["stick_pitch"])
+                        log.dbg(jsondata["stick_throttle"])
+                        if jsondata["message_type"] == "STICK_UPDATE":
+                            log.dbg("looks like a stick update message boss")
+                    except Exception as ex:
+                        log.err("oh shit")
+                        log.err(ex)
+                except KeyboardInterrupt:
+                    key_kill = True
+                    break
         except:
             pass
-
-        log.wng('Client %s decided it was time to go. Bye.' % str(self.client_address[0]))
+        if key_kill == False:
+            log.wng('Client %s decided it was time to go. Bye.' % str(self.client_address[0]))
 
 class ServerMain(socketserver.TCPServer):
     # def service_actions(self):
