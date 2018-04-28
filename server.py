@@ -21,10 +21,10 @@ claw_servo_gpio = 27
 unnamed_six = 22
 
 # Variable Hell
-js_throttle = 50
-js_pitch = 50
-js_yaw = 50
-js_roll = 50
+js_throttle = 50.0
+js_pitch = 50.0
+js_yaw = 50.0
+js_roll = 50.0
 claw_state = False
 
 claw_last_state = False
@@ -37,18 +37,29 @@ class ServerHandler(socketserver.BaseRequestHandler):
     """
 
     def notmap(self, x, in_min, in_max, out_min, out_max):
-        return int((x-in_min) * (out_max-out_min) / (in_max-in_min) + out_min)
+        try:
+            log.dbg(x)
+        except Exception as e:
+            log.err("section kwfw")
+            log.err(e)
+        try:
+            log.dbg(((x-in_min) * (out_max-out_min) / (in_max-in_min) + out_min))
+        except Exception as e:
+            log.err("section mwfw")
+            log.err(e)
+        return ((x-in_min) * (out_max-out_min) / (in_max-in_min) + out_min)
 
     def joyPain(self, jsondata):
         try:
-            js_throttle = self.notmap(jsondata["stick_throttle"], -1, 1, 0, 100)
-            js_pitch = self.notmap(jsondata["stick_pitch"], -1, 1, 0, 100)
-            js_yaw = self.notmap(jsondata["stick_yaw"], -1, 1, 0, 100)
-            js_roll = self.notmap(jsondata["stick_roll"], -1, 1, 0, 100)
-            log.dbg(js_yaw)
+            js_throttle = self.notmap(jsondata["stick_throttle"], -1.0, 1.0, 0.0, 100.0)
+            js_pitch = self.notmap(jsondata["stick_pitch"], -1.0, 1.0, 0.0, 100.0)
+            js_yaw = self.notmap(jsondata["stick_yaw"], -1.0, 1.0, 0.0, 100.0)
+            js_roll = self.notmap(jsondata["stick_roll"], -1.0, 1.0, 0.0, 100.0)
+            log.dbg(type(jsondata["stick_throttle"]))
             self.drivePain()
-        except:
-            log.err("ahahahahahahhahahhahh")
+        except Exception as e:
+            log.err("section djfjfj")
+            log.err(e)
 
     def drivePain(self):
         # Check if claw has changed
@@ -66,8 +77,9 @@ class ServerHandler(socketserver.BaseRequestHandler):
         try:
             self.servoActuate(4,  js_throttle)
             self.servoActuate(17, js_throttle)
-        except:
+        except Exception as e:
             log.err("failed up")
+            log.err(e)
         # go forward
         #servoActuate(2, js_pitch)
         #servoActuate(3, js_pitch)
@@ -75,11 +87,15 @@ class ServerHandler(socketserver.BaseRequestHandler):
         try:
             self.servoActuate(2,  js_yaw + js_pitch)
             self.servoActuate(3, -js_yaw + js_pitch)
-        except:
-            log.err("failed up")
+        except Exception as e:
+            log.err("failed spin")
+            log.err(e)
 
     def servoActuate(self, channel, target):
-        pwmhell.set_servo_pulsewidth(channel, self.notmap(target, 0, 100, 1100, 1900))
+        #try:
+            #pwmhell.set_servo_pulsewidth(channel, self.notmap(target, 0, 100, 1100, 1900))
+        #except Exception as e:
+            #log.err(e)
         log.dbg(target)
         log.dbg(self.notmap(target, 0, 100, 1100, 1900))
 
@@ -130,7 +146,7 @@ class ServerMain(socketserver.TCPServer):
 
 
 if __name__ == "__main__":
-    HOST, PORT = "0.0.0.0", 9999
+    HOST, PORT = "0.0.0.0", 9993
 
     # start background subprocess for streaming out main camera interface
 
