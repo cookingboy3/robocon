@@ -34,7 +34,7 @@ class ServerHandler(socketserver.BaseRequestHandler):
                 print("%s wrote: %s" % (client_ip, received_data))
 
                 # respond
-                # self.request.send(received_data.upper().encode('utf-8'))
+                self.request.send(received_data.upper().encode('utf-8'))
         except:
             pass
 
