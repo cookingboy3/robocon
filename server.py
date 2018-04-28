@@ -46,7 +46,7 @@ class ServerHandler(socketserver.BaseRequestHandler):
             js_yaw = self.notmap(jsondata["stick_yaw"], -1, 1, 0, 100)
             js_roll = self.notmap(jsondata["stick_roll"], -1, 1, 0, 100)
             log.dbg(js_yaw)
-            drivePain()
+            self.drivePain()
         except:
             log.err("ahahahahahahhahahhahh")
 
@@ -56,21 +56,21 @@ class ServerHandler(socketserver.BaseRequestHandler):
             # Move the claw
             if claw_state == False:
                 # Close claw
-                servoActuate(27, 100)
+                self.servoActuate(27, 100)
                 claw_last_state = True
             else:
                 #Open claw
-                servoActuate(27, 0)
+                self.servoActuate(27, 0)
                 claw_last_state = False
         # go up
-        servoActuate(4,  js_throttle)
-        servoActuate(17, js_throttle)
+        self.servoActuate(4,  js_throttle)
+        self.servoActuate(17, js_throttle)
         # go forward
         #servoActuate(2, js_pitch)
         #servoActuate(3, js_pitch)
         # S P I N
-        servoActuate(2,  js_yaw + js_pitch)
-        servoActuate(3, -js_yaw + js_pitch)
+        self.servoActuate(2,  js_yaw + js_pitch)
+        self.servoActuate(3, -js_yaw + js_pitch)
 
     def servoActuate(self, channel, target):
         pwmhell.set_servo_pulsewidth(channel, self.notmap(target, 0, 100, 1100, 1900))
