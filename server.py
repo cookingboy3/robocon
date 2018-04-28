@@ -51,11 +51,11 @@ class ServerHandler(socketserver.BaseRequestHandler):
             # Move the claw
             if claw_state == False:
                 # Close claw
-                servoActuate(claw_servo_gpio, 100)
+                servoActuate(27, 100)
                 claw_last_state = True
             else:
                 #Open claw
-                servoActuate(claw_servo_gpio, 0)
+                servoActuate(27, 0)
                 claw_last_state = False
         # Forward/backward motor
 
