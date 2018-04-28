@@ -36,32 +36,55 @@ class ServerHandler(socketserver.BaseRequestHandler):
     Request handler class
     """
 
-    def notmap(self, x, in_min, in_max, out_min, out_max):
-        try:
-            log.dbg(x)
-        except Exception as e:
-            log.err("section kwfw")
-            log.err(e)
-        try:
-            log.dbg(out_min + (out_max - out_min) * ((x - in_min) / (in_max - in_min)))
-        except Exception as e:
-            log.err("section mwfw")
-            log.err(e)
-        return out_min + (out_max - out_min) * ((x - in_min) / (in_max - in_min))
+    #def notmap(self, x, in_min, in_max, out_min, out_max):
+    #    try:
+        #     log.dbg(x)
+        # except Exception as e:
+        #     log.err("section kwfw")
+        #     log.err(e)
+        # try:
+        #     log.dbg(out_min + (out_max - out_min) * ((x - in_min) / (in_max - in_min)))
+        # except Exception as e:
+        #     log.err("section mwfw")
+        #     log.err(e)
+        # return out_min + (out_max - out_min) * ((x - in_min) / (in_max - in_min))
 
     def joyPain(self, jsondata):
         try:
-            js_throttle = self.notmap(jsondata["stick_throttle"], -1.0, 1.0, 0.0, 100.0)
-            js_pitch = self.notmap(jsondata["stick_pitch"], -1.0, 1.0, 0.0, 100.0)
-            js_yaw = self.notmap(jsondata["stick_yaw"], -1.0, 1.0, 0.0, 100.0)
-            js_roll = self.notmap(jsondata["stick_roll"], -1.0, 1.0, 0.0, 100.0)
-            log.dbg(type(jsondata["stick_throttle"]))
+            # js_throttle = self.notmap(jsondata["stick_throttle"], -1.0, 1.0, 0.0, 100.0)
+            # js_pitch = self.notmap(jsondata["stick_pitch"], -1.0, 1.0, 0.0, 100.0)
+            # js_yaw = self.notmap(jsondata["stick_yaw"], -1.0, 1.0, 0.0, 100.0)
+            # js_roll = self.notmap(jsondata["stick_roll"], -1.0, 1.0, 0.0, 100.0)
+            if jsondata["stick_throttle"] >= 0.5:
+                self.servoActuate(4,  1750)
+                self.servoActuate(17, 1750)
+            elif jsondata["stick_throttle"] <= -0.5:
+                self.servoActuate(4,  1250)
+                self.servoActuate(17, 1250)
+            else:
+                self.servoActuate(4,  1500)
+                self.servoActuate(17, 1500)
+            if jsondata["stick_pitch"] >= 0.5:
+                self.servoActuate(2, 1750)
+                self.servoActuate(3, 1750)
+            elif jsondata["stick_pitch"] <= -0.5:
+                self.servoActuate(2, 1250)
+                self.servoActuate(3, 1250)
+            elif jsondata["stick_yaw"] >= 0.5:
+                self.servoActuate(2, 1750)
+                self.servoActuate(3, 1250)
+            elif jsondata["stick_yaw"] <= -0.5:
+                self.servoActuate(2, 1250)
+                self.servoActuate(3, 1750)
+            else:
+                self.servoActuate(2, 1500)
+                self.servoActuate(3, 1500)
             self.drivePain()
         except Exception as e:
             log.err("section djfjfj")
             log.err(e)
 
-    def drivePain(self):
+    #def drivePain(self):
         # Check if claw has changed
         #if claw_state != claw_last_state:
             # Move the claw
@@ -74,30 +97,30 @@ class ServerHandler(socketserver.BaseRequestHandler):
         #        self.servoActuate(27, 0)
         #        claw_last_state = False
         # go up
-        try:
-            self.servoActuate(4,  js_throttle)
-            self.servoActuate(17, js_throttle)
-        except Exception as e:
-            log.err("failed up")
-            log.err(e)
+        #try:
+        #    self.servoActuate(4,  js_throttle)
+        #    self.servoActuate(17, js_throttle)
+        #except Exception as e:
+        #    log.err("failed up")
+        #    log.err(e)
         # go forward
         #servoActuate(2, js_pitch)
         #servoActuate(3, js_pitch)
         # S P I N
-        try:
-            self.servoActuate(2,  js_yaw + js_pitch)
-            self.servoActuate(3, -js_yaw + js_pitch)
-        except Exception as e:
-            log.err("failed spin")
-            log.err(e)
+        #try:
+        #    self.servoActuate(2,  js_yaw + js_pitch)
+        #    self.servoActuate(3, -js_yaw + js_pitch)
+        #except Exception as e:
+        #    log.err("failed spin")
+        #    log.err(e)
 
     def servoActuate(self, channel, target):
-        #try:
-            #pwmhell.set_servo_pulsewidth(channel, self.notmap(target, 0, 100, 1100, 1900))
-        #except Exception as e:
-            #log.err(e)
-        log.dbg(target)
-        log.dbg(self.notmap(target, 0, 100, 1100, 1900))
+        try:
+            pwmhell.set_servo_pulsewidth(channel, self.notmap(target, 0, 100, 1100, 1900))
+        except Exception as e:
+            log.err(e)
+        #log.dbg(target)
+        #log.dbg(self.notmap(target, 0, 100, 1100, 1900))
 
     def handle(self):
         try:
