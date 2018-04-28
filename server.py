@@ -40,10 +40,10 @@ class ServerHandler(socketserver.BaseRequestHandler):
         return int((x-in_min) * (out_max-out_min) / (in_max-in_min) + out_min)
 
     def joyPain():
-        js_throttle = map(jsondata["stick_throttle"], 0, 1, 0, 100)
-        js_pitch = map(jsondata["stick_pitch"], 0, 1, 0, 100)
-        js_yaw = map(jsondata["stick_yaw"], 0, 1, 0, 100)
-        js_roll = map(jsondata["stick_roll"], 0, 1, 0, 100)
+        js_throttle = map(jsondata["stick_throttle"], -1, 1, 0, 100)
+        js_pitch = map(jsondata["stick_pitch"], -1, 1, 0, 100)
+        js_yaw = map(jsondata["stick_yaw"], -1, 1, 0, 100)
+        js_roll = map(jsondata["stick_roll"], -1, 1, 0, 100)
 
     def drivePain():
         # Check if claw has changed
