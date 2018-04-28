@@ -102,6 +102,7 @@ class ServerHandler(socketserver.BaseRequestHandler):
     def handle(self):
         try:
             client_ip = str(self.client_address[0])
+            log.dbg("New connection from {}".format(client_ip))
             key_kill = False
 
             while 1:
@@ -156,4 +157,5 @@ if __name__ == "__main__":
     #                   "framerate=30/1,profile=high' ! queue ! rtph264pay ! udpsink host=10.4.10.131 port=5000"], shell=True)
 
     with ServerMain((HOST, PORT), ServerHandler) as server:
+        log.dbg("Starting server...")
         server.serve_forever()
