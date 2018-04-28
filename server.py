@@ -26,7 +26,7 @@ class ServerHandler(socketserver.BaseRequestHandler):
 
                 received_data = self.data.decode('utf-8').strip()
                 received_data = json.loads(received_data)
-                
+
                 if received_data["message_type"] == "STICK_UPDATE":
                     log.dbg("got stick!")
 
@@ -59,8 +59,10 @@ if __name__ == "__main__":
     HOST, PORT = "0.0.0.0", 9999
 
     # start background subprocess for streaming out main camera interface
-    subprocess.run("raspivid -o - -t 0 -n -w 1280 -h 720 -fps 30 | cvlc -vvv stream:///dev/stdin --sout '#rtp{sdp=rtsp:"
-                   "//:8554/}' :demux=h264", shell=True)
+
+    #subprocess.Popen("raspivid -o - -t 0 -n -w 1280 -h 720 -fps 30 | cvlc -vvv stream:///dev/stdin --sout '#rtp{sdp=rtsp:"
+    #               "//:8554/}' :demux=h264", shell=True)
+    subprocess.Popen([]"gst-launch-1.0 rpicamsrc preview=false ! 'video/x-h264, width=1280, height=720," "framerate=30/1,profile=high' ! queue ! rtph264pay ! udpsink host=10.4.10.131 port=5000"], shell=True)
 
     with ServerMain((HOST, PORT), ServerHandler) as server:
         server.serve_forever()
