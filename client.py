@@ -5,6 +5,7 @@ import lumberjack
 import pygame
 import sys
 import json
+from time import sleep
 
 HOST, PORT = "10.4.10.131", 9999
 data = " ".join(sys.argv[1:])
@@ -12,8 +13,8 @@ log = lumberjack.Lumberjack("client.py", "CLIENT", 2)
 
 
 def sendstickpositionupdate():
-    jsondata = '\{"message_type": "STICK_UPDATE", "stick_roll": {0:.3f}, "stick_pitch": {1:.3f}, "stick_yaw": {2:.3f} ' \
-            '"stick_throttle": {3:.3f}\}'.format(stick.get_axis(0), stick.get_axis(1), stick.get_axis(3),
+    jsondata = '"message_type": "STICK_UPDATE", "stick_roll": {0:.3f}, "stick_pitch": {1:.3f}, "stick_yaw": {2:.3f}, ' \
+            '"stick_throttle": {3:.3f}'.format(stick.get_axis(0), stick.get_axis(1), stick.get_axis(3),
                                                   stick.get_axis(2))
     sock.send(bytes(jsondata + "\n", "utf-8"))
 
@@ -54,7 +55,9 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
         for event in pygame.event.get():
             if event.type == pygame.JOYAXISMOTION:
                 sendstickpositionupdate()
+                sleep(0.05)
             if event.type == pygame.JOYBUTTONDOWN or event.type == pygame.JOYBUTTONUP:
                 sendbuttonstateupdate()
+                sleep(0.05)
 
     # received = str(sock.recv(4096), "utf-8")
