@@ -72,14 +72,9 @@ class ServerHandler(socketserver.BaseRequestHandler):
         servoActuate(3, -js_yaw + js_pitch)
 
     def servoActuate(self, channel, target):
-        if channel == 999 or 998 or 997:
-            # Use specific range for channel
-            pwmhell.set_servo_pulsewidth(channel, self.notmap(target, 0, 100, 1100, 1900))
-        else:
-            # Use full range
-            pwmhell.set_servo_pulsewidth(channel, self.notmap(target, 0, 100, 1100, 1900))
-            log.dbg(target)
-            log.dbg(self.notmap(target, 0, 100, 1100, 1900))
+        pwmhell.set_servo_pulsewidth(channel, self.notmap(target, 0, 100, 1100, 1900))
+        log.dbg(target)
+        log.dbg(self.notmap(target, 0, 100, 1100, 1900))
 
     def handle(self):
         try:
