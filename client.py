@@ -20,6 +20,9 @@ def sendstickpositionupdate():
 
 def sendbuttonstateupdate():
     log.wng("button state updated, but I didn't implement. oops.")
+    jsondata = ""
+
+    sock.send(bytes(jsondata + "\n", "utf-8"))
 
 # joystick init and setup and stuff
 log.dbg("Starting joystick init")
