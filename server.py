@@ -89,7 +89,7 @@ class ServerHandler(socketserver.BaseRequestHandler):
                             log.dbg("looks like a stick update message boss")
                         joyPain()
                     except Exception as ex:
-                        log.err("oh shit")
+                        log.err("uh oh")
                         log.err(ex)
                 except KeyboardInterrupt:
                     key_kill = True
