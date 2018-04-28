@@ -170,7 +170,7 @@ class ServerMain(socketserver.TCPServer):
 
 
 if __name__ == "__main__":
-    HOST, PORT = "0.0.0.0", 9993
+    HOST, PORT = "0.0.0.0", 9999
 
     # start background subprocess for streaming out main camera interface
 
