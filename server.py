@@ -32,6 +32,7 @@ class ServerHandler(socketserver.BaseRequestHandler):
         return int((x-in_min) * (out_max-out_min) / (in_max-in_min) + out_min)
 
     def drivePain():
+        # Check if claw has changed
         if claw_state != claw_last_state:
             # Move the claw
             if claw_state == False:
@@ -42,6 +43,9 @@ class ServerHandler(socketserver.BaseRequestHandler):
                 #Open claw
                 #servoActuate(?, 0)
                 claw_last_state = False
+        # Forward/backward motor
+
+        # Up/down motor
 
     def servoActuate(channel, target):
         if channel == 999 or 998 or 997:
